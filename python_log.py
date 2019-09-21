@@ -53,6 +53,12 @@ def requests_lead_errors(question):
     for i in results:
         print("\t" + str(i[0]) + "" + ": " + str(i[1]) + " errors")
         print("")
-most_popular_three_articles(_question1)
-most_popular_article_authors(_question2)
-requests_lead_errors(_question3)
+
+
+def main():
+    """Main function"""
+    most_popular_three_articles(_question1)
+    most_popular_article_authors(_question2)
+    requests_lead_errors(_question3)
+
+main()
