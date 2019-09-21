@@ -38,7 +38,7 @@ def most_popular_three_articles(question):
 
 
 def most_popular_article_authors(question):
-    """This function anwers the first question"""
+    """This function anwers the second question"""
     results = connect_db(question)
     print("\nThe most popular article authors of all time:\n")
     for i in results:
@@ -47,7 +47,7 @@ def most_popular_article_authors(question):
 
 
 def requests_lead_errors(question):
-    """This function anwers the first question"""
+    """This function anwers the third question"""
     results = connect_db(question)
     print("\nDays when more than 1% of requests lead to errors:\n")
     for i in results:
