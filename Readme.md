@@ -16,3 +16,15 @@
 - Connect to the database using `psql -d news`
 - Once you are located on database `news`, go ahead and create the views you will see below.
 - Run the tool like this: `python3 python_log.py`
+
+#### Queries for creating views
+
+ ```CREATE VIEW mostviews_articles AS SELECT articles.title,count(log.path) FROM articles,log WHERE log.path LIKE '%' || articles.slug AND log.status = '200 OK' GROUP BY articles.title ORDER BY 2 desc```
+ 
+ ```CREATE VIEW logs AS SELECT to_char(time,'DD-MON-YYYY') AS Date, count(*) as Log_Count FROM log GROUP BY Date```
+ 
+ ```CREATE VIEW article_authors AS SELECT title,name FROM articles,authors WHERE articles.author = authors.id```
+ 
+ ```CREATE VIEW error_logs AS SELECT to_char(time,'DD-MON-YYYY') AS Date, count(*) AS error_count FROM log WHERE STATUS = '404 NOT FOUND' GROUP BY Date```
+ 
+ 
