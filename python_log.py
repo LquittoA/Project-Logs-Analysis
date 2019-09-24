@@ -1,8 +1,9 @@
-# !usr/bin/env python
+#!/usr/bin/env python
 # Logs Analysis Project by Leonardo Quitto
 
 # PostgreSQL database adapter for the Python programming language
 import psycopg2
+import sys
 
 # Built-in Database provided by Udacity to complete this project
 DBNAME = "news"
@@ -26,15 +27,21 @@ _question3 = """WITH r AS (SELECT DATE(log.time) AS date,COUNT(*) as num FROM
 
 def connect_db(question):
     """This function connects to the database."""
-    conn = psycopg2.connect(dbname=DBNAME)
-    # Sending SQL statements and receiving results from the database
-    c = conn.cursor()
-    # Executing queries
-    c.execute(question)
-    # Fetching results
-    records = c.fetchall()
-    conn.close
-    return records
+    try:
+        conn = psycopg2.connect(dbname=DBNAME)
+        # Sending SQL statements and receiving results from the database
+        c = conn.cursor()
+        # Executing queries
+        c.execute(question)
+        # Fetching results
+        records = c.fetchall()
+        conn.close
+        return records
+    except psycopg2.Error as e:
+        print("Unable to connect to Data Base")
+        # Exit the program
+        sys.exit(1)
+        raise e
 
 
 def most_popular_three_articles(question):
@@ -69,5 +76,4 @@ def main():
     most_popular_three_articles(_question1)
     most_popular_article_authors(_question2)
     requests_lead_errors(_question3)
-
 main()
