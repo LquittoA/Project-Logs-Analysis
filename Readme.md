@@ -17,14 +17,23 @@
 - Once you are located on database `news`, go ahead and create the views you will see below.
 - Run the tool like this: `python3 python_log.py`
 
-#### Queries for creating views
+#### SQL Queries to answer the three questions:
 
-```CREATE VIEW mostviews_articles AS SELECT articles.title,count(log.path) FROM      articles,log WHERE log.path LIKE '%' || articles.slug AND log.status = '200 OK'    GROUP BY articles.title ORDER BY 2 desc```
+`SELECT articles.title AS articles,count(log.path) AS
+Number_Views FROM articles,log WHERE log.path
+LIKE '%' || articles.slug AND log.status = '200 OK'
+GROUP BY 1 ORDER BY 2 DESC LIMIT 3;`
+
+`SELECT authors.name,count(log.id) FROM articles,authors,log 
+WHERE articles.author = authors.id AND log.status = '200 OK' 
+AND log.path LIKE '%' || articles.slug GROUP BY 1 
+ORDER BY 2 DESC;`
+
+`WITH r AS (SELECT DATE(log.time) AS date,COUNT(*) as num FROM
+log WHERE log.status!='200 OK' GROUP BY date ORDER by date),
+t AS (SELECT DATE(log.time) AS date,COUNT(*) AS count
+FROM log GROUP BY date)SELECT r.date ,ROUND(100.0*r.num/t.count,2)
+AS Percent FROM r,t WHERE r.date = t.date AND r.num > t.count/100;`
  
-```CREATE VIEW logs AS SELECT to_char(time,'DD-MON-YYYY') AS Date, count(*) as Log_Count FROM log GROUP BY Date```
- 
-```CREATE VIEW article_authors AS SELECT title,name FROM articles,authors WHERE articles.author = authors.id```
- 
-```CREATE VIEW error_logs AS SELECT to_char(time,'DD-MON-YYYY') AS Date, count(*) AS error_count FROM log WHERE STATUS = '404 NOT FOUND' GROUP BY Date```
  
  

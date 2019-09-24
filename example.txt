@@ -22,6 +22,6 @@ The most popular article authors of all time:
 
 Days when more than 1% of requests lead to errors:
 
-        17-JUL-2016: 2.26 errors
+        2016-07-17: 2.26 errors
 
 vagrant@vagrant-ubuntu-trusty-64:~$

@@ -3,16 +3,25 @@
 
 # PostgreSQL database adapter for the Python programming language
 import psycopg2
-import sys
 
 # Built-in Database provided by Udacity to complete this project
 DBNAME = "news"
 
-_question1 = """SELECT * FROM mostviews_articles limit 3;"""
-_question2 = """SELECT * FROM article_authors;"""
-_question3 = """SELECT error_logs.date,round(100.0*error_count/log_count,2) as percent
-                FROM logs,error_logs WHERE logs.date = error_logs.date
-                AND error_count > log_count/100;"""
+_question1 = """SELECT articles.title AS articles,count(log.path) AS
+                Number_Views FROM articles,log WHERE log.path
+                LIKE '%' || articles.slug AND log.status = '200 OK' GROUP BY 1
+                ORDER BY 2 DESC LIMIT 3;"""
+_question2 = """SELECT authors.name,count(log.id) FROM articles,authors,log
+                WHERE articles.author = authors.id AND log.status = '200 OK'
+                AND log.path LIKE '%' || articles.slug GROUP BY 1
+                ORDER BY 2 DESC;"""
+_question3 = """WITH r AS (SELECT DATE(log.time) AS date,COUNT(*) as num FROM
+                log WHERE log.status!='200 OK' GROUP BY date ORDER by date),
+                t AS (SELECT DATE(log.time) AS date,COUNT(*) AS count
+                FROM log GROUP BY date)SELECT r.date ,
+                ROUND(100.0*r.num/t.count,2)
+                AS Percent FROM r,t WHERE r.date = t.date
+                AND r.num > t.count/100;"""
 
 
 def connect_db(question):
